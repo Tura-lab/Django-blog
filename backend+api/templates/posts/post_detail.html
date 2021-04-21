@@ -1,0 +1,113 @@
+<!doctype html>
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content%}
+
+<div class='post-detail'>
+    <div class='post'>
+        <div class='post-date-author'>
+            <img src="{% static 'img/pp.png'%}" alt='avatar pic' class='pic'>
+            <div class='date-author date-author-list-detail'>
+                <p>{{q.author.username}}</p>
+                <p class='date'>{{q.date_posted}}</p>
+            </div>
+        </div>
+        <p class='post-content'>{{q.text}}</p>
+    </div>
+
+    <div class='answer-list'>
+        {% for ans in q.answers.all %}
+            <div class='answer-block'>
+
+                <div class='voter'>
+                    <form method='post' action="{% url 'up-page' ans.id %}">{% csrf_token %}
+                        <input type='hidden' name='q_id' value='{{q.id}}'>
+                        <button {% if not user.is_authenticated %} disabled {% endif %} name='ans_id' value='{{ans.id}}' class='voter-item up' type='submit'>
+                            <img src="{% static 'img/up.png'%}" alt='avatar pic' >
+                        </button>
+                        
+                    </form>
+
+                    <p class='vote-count voter-item'>{{ans.votes}}</p>
+
+                    <form method='post' action="{% url 'down-page' ans.id%}">{% csrf_token %}
+                        <input type='hidden' name='q_id' value='{{q.id}}'>
+                        
+                        <button {% if not user.is_authenticated %} disabled {% endif %} name='ans_id' value='{{ans.id}}' class='voter-item down' type='submit'>
+                            <img src="{% static 'img/down.png'%}" alt='avatar pic' >
+                        </button>
+                        
+                    </form>
+                    
+                </div>
+
+                <div class='answer'>
+                    <div class='post-date-author'>
+                        <img src="{% static 'img/a.png'%}" alt='avatar pic' >
+                        <div class='date-author'>
+                            <p>{{ans.author.username}}</p>
+                            <p class='date'>{{ans.date_posted}}</p>
+                        </div>
+                    </div>
+                    <p class='answer-content'>{{ans.text}}</p>
+
+                    
+                </div>
+            </div>
+            <div class='comment-block'>
+                {% for c in ans.comments.all %}
+                    <div class='comment'>
+                        <div class='post-date-author'>
+                            <img src="{% static 'img/c.png'%}" alt='avatar pic' >
+                            <div class='date-author'>
+                                <p>{{c.author.username}}</p>
+                                <p class='date'>{{c.date_posted}}</p>
+                            </div>
+                        </div>
+                        <p class='answer-content'>{{c.text}}</p>
+                    </div>
+                {% endfor %}
+                <div class='input-comment'>
+                    {%if user.is_authenticated%}
+                        <form method='post' action="{% url 'comment-page' ans.id %}">{% csrf_token %}
+                            <input type='hidden' name='q_id' value='{{q.id}}'>
+                            <input type='text' name='comment-text'>
+
+                            <button name='ans_id' value='{{ans.id}}' class='submit-comment' type='submit'>Submit Comment</button>
+                            
+                        </form>
+                    {%else%}
+                        <p><a href='{% url 'login' %}'>Login</a> or <a href='{% url 'signup' %}'>SignUp</a> to comment on this answer.</p>
+        
+                    {%endif%}
+
+                </div>
+
+            </div>
+        {% endfor %}
+
+    </div>
+    <div class='input-answer'>
+
+        {%if user.is_authenticated%}
+            {%if q.author.username != user.username%}
+                <form class='answer-form' method='post' action="{% url 'answer-page' q.id%}">{% csrf_token %}
+                    <textarea name='answer-text' placeholder='Type your answer here...'></textarea>
+                    <br>
+                    <input type='hidden' name='q_id' value='{{q.id}}'>
+
+                    <button type="submit">Submit Answer</button>
+                </form>
+        {%endif%}
+        {%else%}
+            <p><a href='{% url 'login' %}'>Login</a> or <a href='{% url 'signup' %}'>SignUp</a> to answer this question.</p>
+        {%endif%}
+
+    </div>
+</div>
+
+{% endblock  %}
+
+ 

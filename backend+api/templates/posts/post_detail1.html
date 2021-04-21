@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{%block content%}
+
+<p>{{q.author.username}} <strong>{{q.text}}</strong> {{q.date_posted}}</p>
+
+<ul>
+{% if q.answers.all%}
+ {% for ans in q.answers.all%}
+  <li>
+  <p>{{ans.date_posted}} {{ans.text}}</p>
+  
+  <ul>
+  {%if ans.comments.all%}
+    {% for com in ans.comments.all%}
+      <li><p>{{com.date_posted}} {{com.text}}</p></li>
+
+    {%endfor%}
+  {%endif%}
+  </ul>
+  </li>
+{%endfor%}
+
+{%else%}
+ <div>Be the first to answer this question...</div>
+{%endif%}
+
+
+
+{%if user.is_authenticated%}
+  {%if q.author.username != user.username%}
+    <form method='post' action='.'>{% csrf_token %}
+      {{form.as_p}}
+      <button type="submit">Submit Answer</button>
+    </form>
+  {%endif%}
+{%else%}
+  <p><a href='{% url 'login' %}'>Login</a> or <a href='{% url 'signup' %}'>SignUp</a> to answer this question.</p>
+{%endif%}
+
+</ul>
+
+{%endblock content%}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{%block content%}
+
+{%for q in q_list%}
+  <div class='post-block'>
+    <a href="{% url 'post-detail' q.id %}">
+      <h3>{{q.author}} - {{q.date_posted}}</h3>
+      <strong>{{q.text}}</strong>
+      <p>{{q.answer_count}} answers yet</p>
+    </a>
+  </div>
+
+{%endfor%}
+{%endblock content%}

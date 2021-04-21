@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{%block content%}
+<div class='ask'>
+    <form class='question-form' method='post' action='.'>{% csrf_token %}
+        <h2>Ask your question</h2>
+        {{form.as_p}}
+        <div class='id'>
+            <input type='checkbox'>
+            <label>Show my Identity</label>
+        </div>
+        <br>
+        <button type='submit'>Submit Question</button>
+    </form>
+</div>
+{%endblock content%}

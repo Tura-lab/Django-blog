@@ -1,0 +1,61 @@
+<!doctype html>
+{% load static %}
+
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href="{% static 'css/m.css'%}">
+  </head>
+
+<body>
+  <header>
+        <nav>
+            <a href="{% url 'home'%}"><img src="{% static 'img/logo.jpg' %}" alt='logo'></a>
+            {% if user.is_authenticated %}
+              <p><strong>Hello {{user.username}}</strong></p>
+            
+            {% endif %}
+            <ul class='navbar'>
+                <li class='navbar-item'><a href="{% url 'home'%}">Questions</a><li>
+                <li class='navbar-item'><a href="{% url 'post-create'%}">Ask a Question</a></li>
+                
+                {% if not user.is_authenticated %}
+                <li class='navbar-item'><a href="{% url 'login'%}">Login</a></li>
+                <li class='navbar-item'><a href="{% url 'signup'%}">SignUp</a></li>
+
+                {%else%}
+                <li class='navbar-item'><a href="{% url 'logout'%}">LogOut</a></li>
+                {% endif %}
+                <li class='navbar-item contact'><a href='#'>Contact Developers</a></li>
+                
+            </ul>
+        </nav>
+    </header>
+  {%block content%}
+
+  {% endblock %}
+  
+  <aside class='sidebar'>
+      <div class='sidebar-top'>
+        <p>Sidebar for some bullshit</p>
+        <p>Sidebar for some bullshit</p>
+        <p>Sidebar for some bullshit</p>
+        <p>Sidebar for some bullshit</p>
+        <p>Sidebar for some bullshit</p>
+      </div>
+
+      <div class='sidebar-bottom'>
+        <ul class='sidebar-list'>
+          <li class='sidebar-list-item'>Footer mnamn</li>
+          <li class='sidebar-list-item'>Footer mnamn</li>
+          <li class='sidebar-list-item'>Footer mnamn</li>
+          <li class='sidebar-list-item'>Footer mnamn</li>
+          <li class='sidebar-list-item'>Footer mnamn</li>
+          <li class='sidebar-list-item'>Footer mnamn</li>
+        </ul>
+      </div>
+    </aside>
+    <script>conmsole.log('PLEASE WORK PLEASE')</script>
+  </body>
+</html>

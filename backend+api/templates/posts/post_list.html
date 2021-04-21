@@ -1,0 +1,28 @@
+{% extends 'base.html' %}  
+{% load static %}
+
+{%block content%}
+
+  <div class='post-list'>
+    {% for q in q_list %}
+
+      <a href="{% url 'post-detail' q.id%}">
+        <div class='post'>
+          <div class='post-date-author'>
+              <img src="{% static 'img/pp.png'%}" alt='avatar pic' class='pic'>
+              <div class='date-author date-author-list-detail'>
+                <p>{{q.author.username}}</p>
+                <p class='date'>{{q.date_posted}}</p>
+              </div>
+          </div>
+          
+            <p class='post-content'>{{q.text}}</p>
+            <p class='answer-count'>{{q.answer_count}} answers yet</p>
+          
+
+        </div>
+      </a>
+    {% endfor %}
+    </div>
+
+{% endblock %}
